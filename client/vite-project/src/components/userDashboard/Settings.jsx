@@ -9,9 +9,8 @@ const UserDashboard = () => {
 
   return (
     <>
-      <div>Welcome Back!! {userData.fullName}</div>
-      <div>Welcome Back!! {userData.email}</div>
-      <div>Welcome Back!! {userData.phone}</div>
+    
+    
       <div className="w-24 h-24 rounded-full overflow-hidden">
         <img
           src={userData.photo}
