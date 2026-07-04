@@ -1,8 +1,6 @@
 import Jwt from "jsonwebtoken";
-import User from "../models/user.model.js";
 
-
-export const genToken = async (user) => {
+export const genToken = async (user, res) => {
   try {
     const payload = {
       id: user._id,
@@ -16,7 +14,7 @@ export const genToken = async (user) => {
     res.cookie("Oreo", token, {
       maxAge: 1000 * 60 * 60 * 24,
       httpOnly: true,
-      secure: true,
+      secure: false,
       sameSite: "lax",
     });
   } catch (error) {

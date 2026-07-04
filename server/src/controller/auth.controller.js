@@ -64,8 +64,8 @@ export const LoginUser = async (req, res, next) => {
       error.statusCode = 401;
       return next(error);
     }
-   
-      await genToken(existingUser , res);
+
+    await genToken(existingUser, res);
 
     res.status(200).json({
       message: "Welcome Back",
@@ -73,7 +73,7 @@ export const LoginUser = async (req, res, next) => {
     });
   } catch (error) {
     console.log(error.message);
-    next();
+    next(error);
   }
 };
 
