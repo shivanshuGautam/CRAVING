@@ -79,9 +79,15 @@ export const LoginUser = async (req, res, next) => {
 
 export const LogoutUser = async (req, res, next) => {
   try {
-    //Controller Logic
+    res.clearCookie("Oreo", {
+      httpOnly: true,
+      secure: false,
+      sameSite: "lax",
+    });
+
+    res.status(200).json({ message: "Logged out successfully" });
   } catch (error) {
     console.log(error.message);
-    next();
+    next(error);
   }
 };
