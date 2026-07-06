@@ -1,14 +1,11 @@
-import Jwt from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 
 export const genToken = async (user, res) => {
   try {
-    const payload = {
-      id: user._id,
-      email: user.email,
-    };
+    const payload = { id: user._id };
 
-    const token = Jwt.sign(payload, process.env.JWT_SECRET, {
-      expiresIn: "10m",
+    const token = await jwt.sign(payload, process.env.JWT_SECRET, {
+      expiresIn: "1d",
     });
 
     res.cookie("Oreo", token, {
@@ -17,8 +14,9 @@ export const genToken = async (user, res) => {
       secure: false,
       sameSite: "lax",
     });
+
+    console.log(token);
   } catch (error) {
-    console.error("Error generating token:", error);
     throw error;
   }
 };

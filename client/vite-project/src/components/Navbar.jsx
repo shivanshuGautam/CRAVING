@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import logoLight from "../assets/images/HeaderLogo.png";
+import logoLight from "../assets/circleLogo.png";
 import { useAuth } from "../context/AuthContext";
 import { FaPowerOff } from "react-icons/fa";
 import toast from "react-hot-toast";
@@ -37,7 +37,7 @@ const Navbar = () => {
     } catch (error) {
       toast.error(
         error.response?.data?.message ||
-          "Unknown error occurred during logout. Please try again.",
+          "Unknown error occurred during registration. Please try again.",
       );
     }
   };
@@ -59,7 +59,7 @@ const Navbar = () => {
               onClick={handleNavigate}
             >
               <img
-                src={user?.photo}
+                src={user?.photo.url}
                 alt={user?.fullName}
                 className="w-12 h-12 rounded-full object-cover object-top"
               />

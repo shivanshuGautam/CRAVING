@@ -1,47 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { MdEdit } from "react-icons/md";
 import { useAuth } from "../../context/AuthContext";
-import api from "../../config/api.config";
+import api from "../../config/api.config.js";
 import toast from "react-hot-toast";
 import { MdOutlineAddAPhoto } from "react-icons/md";
 
 const CustomerSetting = () => {
   const { user, setUser } = useAuth();
-
-  // User Profile States
-  const [profileData, setProfileData] = useState({
-    fullName: user?.fullName || "",
-    email: user?.email || "",
-    phone: user?.phone || "",
-    photo: user?.photo || "https://via.placeholder.com/150",
-  });
-
   const [editingProfile, setEditingProfile] = useState(false);
+  const [profilePic, setProfilePic] = useState(null);
   const [profilePicPreview, setProfilePicPreview] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [formData, setFormData] = useState({
     fullName: user?.fullName || "",
     email: user?.email || "",
     phone: user?.phone || "",
   });
-  const [isSavingProfile, setIsSavingProfile] = useState(false);
-
-  // Update profileData when user changes
-  useEffect(() => {
-    if (user) {
-      setProfileData({
-        fullName: user.fullName || "",
-        email: user.email || "",
-        phone: user.phone || "",
-        photo: user.photo || "https://via.placeholder.com/150",
-      });
-      setFormData({
-        fullName: user.fullName || "",
-        email: user.email || "",
-        phone: user.phone || "",
-      });
-    }
-  }, [user?.fullName, user?.email, user?.phone, user?.photo]);
 
   // Profile handlers
   const handleProfileChange = (e) => {
@@ -51,51 +26,49 @@ const CustomerSetting = () => {
 
   const handleSaveProfile = async () => {
     try {
-      setIsSavingProfile(true);
+      setIsLoading(true);
 
-      const response = await api.put(`/user/edit-profile`, {
-        fullName: formData.fullName,
-        email: formData.email.toLowerCase(),
-        phone: formData.phone,
+      const payload = new FormData();
+      payload.append("fullName", formData.fullName);
+      payload.append("email", formData.email.toLowerCase());
+      payload.append("phone", formData.phone);
+
+      if (profilePic) {
+        payload.append("displayPic", profilePic);
+      }
+
+      const response = await api.put(`/user/edit-profile`, payload, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       });
 
-      const updatedUser = response.data.data;
-      setProfileData({
-        fullName: updatedUser.fullName || "",
-        email: updatedUser.email || "",
-        phone: updatedUser.phone || "",
-        photo: updatedUser.photo || "https://via.placeholder.com/150",
-      });
-
-      setUser(updatedUser);
-      sessionStorage.setItem("cravingUser", JSON.stringify(updatedUser));
+      setUser(response.data.data);
+      sessionStorage.setItem("cravingUser", JSON.stringify(response.data.data));
 
       setEditingProfile(false);
       toast.success("Profile updated successfully!");
     } catch (err) {
       toast.error(err.response?.data?.message || "Failed to update profile");
     } finally {
-      setIsSavingProfile(false);
+      setIsLoading(false);
     }
   };
 
   const handleCancelProfile = () => {
     setFormData({
-      fullName: profileData.fullName,
-      email: profileData.email,
-      phone: profileData.phone,
+      fullName: user.fullName,
+      email: user.email,
+      phone: user.phone,
     });
+    setProfilePicPreview(null);
     setEditingProfile(false);
   };
 
   const handleProfilePicChange = (e) => {
     const file = e.target.files[0];
-    const fileURL = URL.createObjectURL(file);
-
-    console.log(file);
-    console.log(fileURL);
-
-    setProfilePicPreview(fileURL);
+    setProfilePicPreview(URL.createObjectURL(file));
+    setProfilePic(file);
   };
 
   return (
@@ -116,14 +89,14 @@ const CustomerSetting = () => {
               <button
                 onClick={handleSaveProfile}
                 className="flex items-center gap-2 bg-(--color-primary) text-(--color-primary-content) px-3 py-1 rounded text-sm"
-                disabled={isSavingProfile}
+                disabled={isLoading}
               >
-                {isSavingProfile ? "Saving..." : "Save Changes"}
+                {isLoading ? "Saving..." : "Save Changes"}
               </button>
               <button
                 onClick={handleCancelProfile}
                 className="flex items-center gap-2 bg-(--color-secondary) text-(--color-secondary-content) px-3 py-1 rounded text-sm"
-                disabled={isSavingProfile}
+                disabled={isLoading}
               >
                 Cancel
               </button>
@@ -136,28 +109,30 @@ const CustomerSetting = () => {
             <div className="relative">
               <div className="w-36 h-36">
                 <img
-                  src={profilePicPreview || profileData.photo}
+                  src={profilePicPreview || user?.photo?.url || "https://placehold.co/200x200?text=User"}
                   alt="Profile"
                   className="w-full h-full rounded-full object-cover border-2 border-(--color-primary)"
                 />
               </div>
 
-              <div
-                className="absolute cursor-pointer bottom-1 right-1 border p-2 rounded-full w-fit bg-(--color-base-200)"
-                title="Change Photo"
-              >
-                <label htmlFor="profilePic" className="cursor-pointer">
-                  <MdOutlineAddAPhoto className="text-xl" />
-                </label>
-                <input
-                  type="file"
-                  accept="image/*"
-                  name="profilePic"
-                  id="profilePic"
-                  className="hidden"
-                  onChange={handleProfilePicChange}
-                />
-              </div>
+              {editingProfile && (
+                <div
+                  className="absolute cursor-pointer bottom-1 right-1 border p-2 rounded-full w-fit bg-(--color-base-200)"
+                  title="Change Photo"
+                >
+                  <label htmlFor="profilePic" className="cursor-pointer">
+                    <MdOutlineAddAPhoto className="text-xl" />
+                  </label>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    name="profilePic"
+                    id="profilePic"
+                    className="hidden"
+                    onChange={handleProfilePicChange}
+                  />
+                </div>
+              )}
             </div>
 
             <div className="space-y-4 w-full">
@@ -182,8 +157,8 @@ const CustomerSetting = () => {
                   name="email"
                   value={formData.email}
                   onChange={handleProfileChange}
-                  className={`w-full px-3 py-2 border ${editingProfile ? "border-(--color-secondary)" : "border-transparent"} rounded col-span-4`}
-                  disabled={!editingProfile}
+                  className={`w-full px-3 py-2 border ${editingProfile ? "border-(--color-secondary) text-(--color-secondary) disabled:bg-(--color-secondary)/50 cursor-not-allowed" : "border-transparent"} rounded col-span-4`}
+                  disabled
                 />
 
                 <label className="block text-sm font-semibold mb-2">
