@@ -32,7 +32,7 @@ const Sidebar = ({ activeTab, setActiveTab }) => {
         <ul className="space-y-4 flex-1">
           {mainTabs.map((tab) => renderTab(tab))}
         </ul>
-        <ul className="space-y-4 border-t border-(--color-secondary) py-2">
+        <ul className="space-y-5 border-t border-(--color-secondary) py-2">
           {renderTab(settingsTab)}
         </ul>
       </div>
