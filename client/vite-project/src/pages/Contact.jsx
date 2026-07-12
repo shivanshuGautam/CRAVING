@@ -67,7 +67,7 @@ const Contact = () => {
     <div
       className="h-[90vh] flex items-center justify-start bg-[url('/contactPage.jpg')] bg-cover bg-center p-10 md:ps-30"
     >
-      <div className="bg-white rounded-lg shadow-md px-10 py-6 max-w-md w-full overflow-y-auto max-h-[85vh]">
+      <div className="bg-white rounded-lg shadow-md px-12 py-6 max-w-md w-full overflow-y-auto max-h-[85vh]">
         <h1 className="text-3xl font-bold text-(--color-primary) mb-2 text-center">
           Contact Us
         </h1>
