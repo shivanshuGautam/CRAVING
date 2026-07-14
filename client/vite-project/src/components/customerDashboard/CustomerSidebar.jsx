@@ -4,7 +4,7 @@ import { FaShoppingCart } from "react-icons/fa";
 import { MdFavoriteBorder } from "react-icons/md";
 import { IoMdSettings } from "react-icons/io";
 
-const Sidebar = ({ activeTab, setActiveTab }) => {
+const CustomerSidebar = ({ activeTab, setActiveTab }) => {
   const mainTabs = [
     { name: "Overview", value: "overview", icon: <MdDashboard /> },
     { name: "Orders", value: "orders", icon: <FaShoppingCart /> },
@@ -32,7 +32,7 @@ const Sidebar = ({ activeTab, setActiveTab }) => {
         <ul className="space-y-4 flex-1">
           {mainTabs.map((tab) => renderTab(tab))}
         </ul>
-        <ul className="space-y-5 border-t border-(--color-secondary) py-2">
+        <ul className="space-y-4 border-t border-(--color-secondary) py-2">
           {renderTab(settingsTab)}
         </ul>
       </div>
@@ -40,4 +40,4 @@ const Sidebar = ({ activeTab, setActiveTab }) => {
   );
 };
 
-export default Sidebar;
+export default CustomerSidebar;

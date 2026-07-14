@@ -34,8 +34,13 @@ const UserSchema = mongoose.Schema(
       },
       publicId: {
         type: String,
-        default: "",
       },
+    },
+    userType: {
+      type: String,
+      enum: ["admin", "customer", "rider", "restaurant"],
+      required: true,
+      default: "customer",
     },
   },
   {
