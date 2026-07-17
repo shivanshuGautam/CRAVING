@@ -103,15 +103,15 @@ const RestaurantPhotos = () => {
   };
 
   return (
-    <div className="p-2">
+    <div className="p-1 md:p-2">
       <div className="grid grid-cols-1 xl:grid-cols-[360px_1fr] gap-3 items-start">
-        <div className="bg-(--color-base-100) rounded-xl border border-(--color-secondary)/40 shadow-sm p-4 h-full">
-          <div className="flex items-center justify-between border-b border-(--color-secondary) pb-2 mb-3">
+        <div className="rounded-[22px] border border-orange-200 bg-gradient-to-br from-[#fffaf5] to-[#fff2e5] p-4 h-full shadow-[0_10px_30px_rgba(194,65,12,0.08)]">
+          <div className="flex items-center justify-between border-b border-orange-200 pb-2 mb-3">
             <div className="">
-              <h3 className="text-sm font-semibold text-(--color-primary)">
+              <h3 className="text-sm font-semibold text-[#7c2d12]">
                 Cover Image
               </h3>
-              <p className="text-xs text-(--color-secondary)">
+              <p className="text-xs text-[#8a5a3b]">
                 Upload one hero image under 1MB.
               </p>
             </div>
@@ -124,7 +124,7 @@ const RestaurantPhotos = () => {
             <div className="rounded-xl border border-dashed border-(--color-secondary) bg-(--color-base-100) p-3">
               <label
                 htmlFor="coverImage"
-                className="inline-flex items-center gap-2 bg-(--color-primary) text-(--color-primary-content) px-3 py-1.5 rounded-md text-xs cursor-pointer shadow-sm hover:opacity-95 transition"
+                className="inline-flex items-center gap-2 bg-(--color-primary) text-white px-3 py-1.5 rounded-full text-xs cursor-pointer shadow-sm hover:opacity-95 transition"
               >
                 <MdOutlineAddAPhoto className="text-sm" />
                 Upload Cover Image
@@ -136,7 +136,7 @@ const RestaurantPhotos = () => {
                 onChange={handleCoverImageChange}
                 className="hidden"
               />
-              <p className="mt-2 text-xs text-(--color-secondary)">
+              <p className="mt-2 text-xs text-[#8a5a3b]">
                 Best for banner-style photos. JPG, PNG, AVIF, WEBP all work.
               </p>
               {errors.cover && (
@@ -147,7 +147,7 @@ const RestaurantPhotos = () => {
             </div>
 
             {coverImage && coverPreview ? (
-              <div className="overflow-hidden rounded-xl border border-(--color-secondary) bg-white shadow-sm">
+              <div className="overflow-hidden rounded-xl border border-orange-200 bg-white shadow-sm">
                 <div className="relative">
                   <img
                     src={coverPreview}
@@ -164,14 +164,14 @@ const RestaurantPhotos = () => {
                 </div>
               </div>
             ) : (
-              <div className="rounded-xl border border-dashed border-(--color-secondary) bg-linear-to-br from-white to-(--color-base-100) px-4 py-8 text-center">
+              <div className="rounded-xl border border-dashed border-orange-200 bg-linear-to-br from-white to-[#fff8f1] px-4 py-8 text-center">
                 <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-(--color-primary)/10 text-(--color-primary)">
                   <MdOutlineAddAPhoto className="text-2xl" />
                 </div>
                 <p className="text-sm font-semibold text-(--color-primary)">
                   No cover selected
                 </p>
-                <p className="mt-1 text-xs text-(--color-secondary-content)">
+                <p className="mt-1 text-xs text-[#8a5a3b]">
                   Add a clean hero image to make this restaurant stand out.
                 </p>
               </div>
@@ -179,18 +179,18 @@ const RestaurantPhotos = () => {
           </div>
         </div>
 
-        <div className="bg-(--color-base-100) rounded-xl border border-(--color-secondary)/40 shadow-sm p-4 h-full">
-          <div className="flex items-start justify-between gap-3 border-b border-(--color-secondary) mb-3">
+        <div className="rounded-[22px] border border-orange-200 bg-gradient-to-br from-[#fffaf5] to-[#fff2e5] p-4 h-full shadow-[0_10px_30px_rgba(194,65,12,0.08)]">
+          <div className="flex items-start justify-between gap-3 border-b border-orange-200 mb-3">
             <div>
               <div className="flex items-center gap-2">
-                <h3 className="text-sm font-semibold text-(--color-primary)">
+                <h3 className="text-sm font-semibold text-[#7c2d12]">
                   Other Restaurant Images
                 </h3>
                 <span className="text-[11px] px-2 py-1 rounded-full bg-(--color-primary)/10 text-(--color-primary) font-medium">
                   {galleryImages.length}/{MAX_GALLERY_IMAGES}
                 </span>
               </div>
-              <p className="text-xs text-(--color-secondary-content) mt-0.5">
+              <p className="text-xs text-[#8a5a3b] mt-0.5">
                 Upload up to {MAX_GALLERY_IMAGES} images, each less than 1MB.
               </p>
             </div>
@@ -198,7 +198,7 @@ const RestaurantPhotos = () => {
             <div className="shrink-0">
               <label
                 htmlFor="galleryImages"
-                className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-md text-xs shadow-sm transition ${galleryImages.length >= MAX_GALLERY_IMAGES ? "bg-(--color-secondary) text-(--color-secondary-content) cursor-not-allowed" : "bg-(--color-primary) text-(--color-primary-content) cursor-pointer hover:opacity-95"}`}
+                className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs shadow-sm transition ${galleryImages.length >= MAX_GALLERY_IMAGES ? "bg-gray-400 text-white cursor-not-allowed" : "bg-(--color-primary) text-white cursor-pointer hover:opacity-95"}`}
               >
                 <MdOutlineAddAPhoto className="text-sm" />
                 Upload Restaurant Images
@@ -226,7 +226,7 @@ const RestaurantPhotos = () => {
               {galleryPreviews.map((imagePreview, index) => (
                 <div
                   key={imagePreview.key}
-                  className="group overflow-hidden rounded-xl border border-(--color-secondary) bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+                  className="group overflow-hidden rounded-xl border border-orange-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
                 >
                   <div className="relative">
                     <img
@@ -237,7 +237,7 @@ const RestaurantPhotos = () => {
                     <button
                       type="button"
                       onClick={() => removeGalleryImage(index)}
-                      className="absolute right-2 top-2 inline-flex h-8 w-8 items-center justify-center rounded-full bg-white/95 text-(--color-error) shadow-sm ring-1 ring-(--color-error)/20 transition hover:bg-(--color-error) hover:text-(--color-error-content)"
+                      className="absolute right-2 top-2 inline-flex h-8 w-8 items-center justify-center rounded-full bg-white/95 text-(--color-error) shadow-sm ring-1 ring-orange-200 transition hover:bg-(--color-error) hover:text-white"
                       aria-label={`Remove ${imagePreview.file.name}`}
                     >
                       <IoMdClose className="text-lg" />
@@ -245,10 +245,10 @@ const RestaurantPhotos = () => {
                   </div>
 
                   <div className="px-3 py-2">
-                    <p className="truncate text-xs font-medium text-(--color-primary)">
+                    <p className="truncate text-xs font-medium text-[#7c2d12]">
                       {imagePreview.file.name}
                     </p>
-                    <p className="mt-0.5 text-[11px] text-(--color-secondary-content)">
+                    <p className="mt-0.5 text-[11px] text-[#8a5a3b]">
                       {(imagePreview.file.size / 1024).toFixed(1)} KB
                     </p>
                   </div>
@@ -256,7 +256,7 @@ const RestaurantPhotos = () => {
               ))}
             </div>
           ) : (
-            <div className="rounded-xl border border-dashed border-(--color-secondary) bg-linear-to-br from-white to-(--color-base-100) px-4 py-10 text-center">
+            <div className="rounded-xl border border-dashed border-orange-200 bg-linear-to-br from-white to-[#fff8f1] px-4 py-10 text-center">
               <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-(--color-primary)/10 text-(--color-primary)">
                 <MdOutlineAddAPhoto className="text-2xl" />
               </div>

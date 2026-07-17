@@ -139,7 +139,7 @@ const ResturantCoreDetails = () => {
 
   return (
     <>
-      <div className="overflow-y-auto h-full p-2 space-y-2">
+      <div className="overflow-y-auto h-full p-1 md:p-2 space-y-3">
         {/* Restaurant Information Section */}
         {isLoadingRestaurant ? (
           <div className="flex flex-col justify-center items-center h-64 gap-4">
@@ -161,7 +161,7 @@ const ResturantCoreDetails = () => {
               <div className="bg-(--color-base-100) rounded-lg p-3">
                 <div className="flex justify-between items-center border-b border-(--color-secondary) pb-2 mb-2">
                   <div className="flex items-center gap-3">
-                    <h3 className="w-full text-sm font-semibold text-(--color-primary)">
+                    <h3 className="w-full text-sm font-semibold text-[#7c2d12]">
                       Address
                     </h3>
                   </div>
@@ -286,7 +286,7 @@ const ResturantCoreDetails = () => {
               <div className="bg-(--color-base-100) rounded-lg p-3">
                 <div className="flex justify-between items-center border-b border-(--color-secondary) pb-2 mb-2">
                   <div className="flex items-center gap-3">
-                    <h3 className="w-full text-sm font-semibold text-(--color-primary)">
+                    <h3 className="w-full text-sm font-semibold text-[#7c2d12]">
                       Banking & Documents
                     </h3>
                   </div>
@@ -396,16 +396,16 @@ const ResturantCoreDetails = () => {
               </div>
 
               {/* Social Media Links */}
-              <div className="bg-(--color-base-100) rounded-lg p-3 h-full flex flex-col">
+              <div className="rounded-[22px] border border-orange-200 bg-gradient-to-br from-[#fffaf5] to-[#fff2e5] p-4 h-full flex flex-col shadow-[0_10px_30px_rgba(194,65,12,0.08)]">
                 <div className="flex justify-between items-center mb-2">
-                  <label className="text-sm font-semibold text-(--color-primary)">
+                  <label className="text-sm font-semibold text-[#7c2d12]">
                     Social Media Links
                   </label>
 
                   <button
                     type="button"
                     onClick={addSocialMediaLink}
-                    className="text-xs bg-(--color-primary) text-(--color-primary-content) px-2 py-0.5 rounded"
+                    className="text-xs bg-(--color-primary) text-white px-2 py-1 rounded-full shadow-sm"
                   >
                     + Add Link
                   </button>

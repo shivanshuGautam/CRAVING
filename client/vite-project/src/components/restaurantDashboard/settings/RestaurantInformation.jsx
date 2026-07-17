@@ -155,9 +155,9 @@ const RestaurantInformation = () => {
 
   return (
     <>
-      <div className="overflow-y-auto h-full p-2 space-y-2">
+      <div className="overflow-y-auto h-full p-1 md:p-2 space-y-3 md:space-y-4">
         {/* User Profile Section */}
-        <div className="bg-(--color-base-100) rounded-lg p-3 flex items-center gap-3">
+        <div className="rounded-[22px] border border-orange-200 bg-gradient-to-r from-[#fff8f1] to-[#fff3e8] p-4 shadow-[0_10px_30px_rgba(194,65,12,0.08)] flex flex-col gap-4 md:flex-row md:items-center">
           <div className="relative">
             <div className="w-26 h-26">
               <img
@@ -188,7 +188,7 @@ const RestaurantInformation = () => {
           </div>
           <div className="w-full">
             <div className="flex justify-between items-center mb-4 border-b border-(--color-secondary) pb-2">
-              <h3 className="text-sm font-semibold text-(--color-primary)">
+              <h3 className="text-sm font-semibold text-[#7c2d12]">
                 Profile Information
               </h3>
               {!editingProfile ? (
@@ -201,7 +201,7 @@ const RestaurantInformation = () => {
                   </button>
                   <button
                     onClick={() => setIsPasswordChangeModalOpen(true)}
-                    className="flex items-center gap-2 border border-(--color-primary) text-(--color-primary) px-2 py-0.5 rounded text-xs hover:bg-(--color-primary) hover:text-(--color-primary-content)"
+                    className="flex items-center gap-2 border border-orange-300 text-(--color-primary) px-2 py-0.5 rounded-full text-xs hover:bg-(--color-primary) hover:text-white"
                   >
                     <MdOutlineLockReset /> Change Password
                   </button>
@@ -285,10 +285,10 @@ const RestaurantInformation = () => {
             </span>
           </div>
         ) : (
-          <div className="bg-(--color-base-100) rounded-lg p-3">
+          <div className="rounded-[22px] border border-orange-200 bg-gradient-to-br from-[#fffaf5] to-[#fff2e5] p-4 shadow-[0_10px_30px_rgba(194,65,12,0.08)]">
             <div className="flex justify-between items-center border-b border-(--color-secondary) pb-2 mb-2">
               <div className="flex items-center gap-3">
-                <h3 className="text-sm font-semibold text-(--color-primary)">
+                <h3 className="text-sm font-semibold text-[#7c2d12]">
                   Restaurant Information
                 </h3>
               </div>
@@ -438,8 +438,8 @@ const RestaurantInformation = () => {
         <div className="bg-(--color-base-100) rounded-lg p-3">
           <div className="flex justify-between items-center border-b border-(--color-secondary) pb-2 mb-2">
             <div className="flex items-center gap-3">
-              <h3 className="text-sm font-semibold text-(--color-primary)">
-                Leagal Information
+              <h3 className="text-sm font-semibold text-[#7c2d12]">
+                Legal Information
               </h3>
             </div>
 
