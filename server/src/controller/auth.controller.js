@@ -6,6 +6,7 @@ import OTP from "../models/otp.model.js";
 import { genOTPToken } from "../utils/auth.service.js";
 import { sendOTPEmail } from "../utils/email.service.js";
 
+// registeruser
 export const RegisterUser = async (req, res, next) => {
   try {
     const { fullName, email, password, phone, gender, dob, userType } =
@@ -25,6 +26,7 @@ export const RegisterUser = async (req, res, next) => {
       return next(error);
     }
 
+    // user hai ki nhi hai
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       const error = new Error("Email already registred");
@@ -59,6 +61,7 @@ export const RegisterUser = async (req, res, next) => {
   }
 };
 
+// loginuser
 export const LoginUser = async (req, res, next) => {
   try {
     const { email, password } = req.body;
@@ -95,6 +98,7 @@ export const LoginUser = async (req, res, next) => {
   }
 };
 
+// logoutuser
 export const LogoutUser = async (req, res, next) => {
   try {
     res.clearCookie("Oreo", { maxAge: 0 });
