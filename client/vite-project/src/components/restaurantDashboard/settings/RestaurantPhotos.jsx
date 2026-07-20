@@ -1,13 +1,18 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { MdOutlineAddAPhoto } from "react-icons/md";
 import { IoMdClose } from "react-icons/io";
+import api from "../../../config/api.config";
+import toast from "react-hot-toast";
+import { useAuth } from "../../../context/AuthContext";
 
 const RestaurantPhotos = () => {
   const MAX_FILE_SIZE = 1024 * 1024; // 1MB
   const MAX_GALLERY_IMAGES = 8;
+  const { user } = useAuth();
 
   const [coverImage, setCoverImage] = useState(null);
   const [galleryImages, setGalleryImages] = useState([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState({ cover: "", gallery: "" });
 
   const coverPreview = useMemo(() => {
@@ -102,6 +107,44 @@ const RestaurantPhotos = () => {
     setErrors((prev) => ({ ...prev, gallery: "" }));
   };
 
+  const handleSubmitPhotos = async () => {
+    if (!coverImage && galleryImages.length === 0) {
+      toast.error("Please select at least one image to upload.");
+      return;
+    }
+
+    try {
+      setIsSubmitting(true);
+      const payload = new FormData();
+
+      if (coverImage) {
+        payload.append("coverImage", coverImage);
+      }
+
+      galleryImages.forEach((image) => payload.append("restaurantImage", image));
+
+      await api.post("/restaurant/update-profile", payload, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+
+      toast.success("Restaurant photos uploaded successfully!");
+      setCoverImage(null);
+      setGalleryImages([]);
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Failed to upload photos");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleChooseCover = () => {
+    document.getElementById("coverImage")?.click();
+  };
+
+  const handleChooseGallery = () => {
+    document.getElementById("galleryImages")?.click();
+  };
+
   return (
     <div className="p-1 md:p-2">
       <div className="grid grid-cols-1 xl:grid-cols-[360px_1fr] gap-3 items-start">
@@ -122,13 +165,14 @@ const RestaurantPhotos = () => {
 
           <div className="space-y-3">
             <div className="rounded-xl border border-dashed border-(--color-secondary) bg-(--color-base-100) p-3">
-              <label
-                htmlFor="coverImage"
+              <button
+                type="button"
+                onClick={handleChooseCover}
                 className="inline-flex items-center gap-2 bg-(--color-primary) text-white px-3 py-1.5 rounded-full text-xs cursor-pointer shadow-sm hover:opacity-95 transition"
               >
                 <MdOutlineAddAPhoto className="text-sm" />
                 Upload Cover Image
-              </label>
+              </button>
               <input
                 id="coverImage"
                 type="file"
@@ -196,13 +240,15 @@ const RestaurantPhotos = () => {
             </div>
 
             <div className="shrink-0">
-              <label
-                htmlFor="galleryImages"
+              <button
+                type="button"
+                onClick={handleChooseGallery}
+                disabled={galleryImages.length >= MAX_GALLERY_IMAGES}
                 className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs shadow-sm transition ${galleryImages.length >= MAX_GALLERY_IMAGES ? "bg-gray-400 text-white cursor-not-allowed" : "bg-(--color-primary) text-white cursor-pointer hover:opacity-95"}`}
               >
                 <MdOutlineAddAPhoto className="text-sm" />
                 Upload Restaurant Images
-              </label>
+              </button>
               <input
                 id="galleryImages"
                 type="file"
@@ -220,6 +266,17 @@ const RestaurantPhotos = () => {
               <p className="text-xs text-(--color-error)">{errors.gallery}</p>
             </div>
           )}
+
+          <div className="mt-4 flex justify-end">
+            <button
+              type="button"
+              onClick={handleSubmitPhotos}
+              disabled={isSubmitting}
+              className="rounded-full bg-(--color-primary) px-4 py-2 text-sm font-semibold text-white shadow-sm disabled:cursor-not-allowed disabled:opacity-70"
+            >
+              {isSubmitting ? "Uploading..." : "Save Photos"}
+            </button>
+          </div>
 
           {galleryPreviews.length > 0 ? (
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">

@@ -77,15 +77,15 @@ const RestaurantInformation = () => {
   const [restaurantData, setRestaurantData] = useState();
   const [editingRestaurant, setEditingRestaurant] = useState(false);
   const [restaurantFormData, setRestaurantFormData] = useState({
-    restaurantName: restaurantData?.restaurantName || "",
-    description: restaurantData?.description || "",
-    restaurantType: restaurantData?.restaurantType || "",
-    cuisineTypes: restaurantData?.cuisineTypes?.join(", ") || "",
-    isOpen: restaurantData?.isOpen || false,
-    contactEmail: restaurantData?.contactDetails?.email || "",
-    contactPhone: restaurantData?.contactDetails?.phone || "",
-    openingTime: restaurantData?.servingHours?.openingTime || "",
-    closingTime: restaurantData?.servingHours?.closingTime || "",
+    restaurantName: "",
+    description: "",
+    restaurantType: "",
+    cuisineTypes: "",
+    isOpen: false,
+    contactEmail: "",
+    contactPhone: "",
+    openingTime: "",
+    closingTime: "",
   });
 
   const handleRestaurantChange = (e) => {
@@ -100,8 +100,28 @@ const RestaurantInformation = () => {
     try {
       setIsLoading(true);
 
-      // Prepare payload for restaurant update
-      console.log("restaurantFormData", restaurantFormData);
+      const payload = new FormData();
+      payload.append("restaurantName", restaurantFormData.restaurantName);
+      payload.append("description", restaurantFormData.description);
+      payload.append("restaurantType", restaurantFormData.restaurantType);
+      payload.append("cuisineTypes", restaurantFormData.cuisineTypes);
+      payload.append("isOpen", restaurantFormData.isOpen ? "true" : "false");
+      payload.append("contactEmail", restaurantFormData.contactEmail);
+      payload.append("contactPhone", restaurantFormData.contactPhone);
+      payload.append("openingTime", restaurantFormData.openingTime);
+      payload.append("closingTime", restaurantFormData.closingTime);
+
+      const response = await api.post(
+        "/restaurant/update-profile",
+        payload,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        },
+      );
+
+      setRestaurantData(response.data.data);
+      setEditingRestaurant(false);
+      toast.success("Restaurant details updated successfully!");
     } catch (error) {
       toast.error(
         error.response?.data?.message || "Failed to update restaurant",
@@ -114,7 +134,6 @@ const RestaurantInformation = () => {
   const handleCancelRestaurant = () => {
     setRestaurantFormData({
       restaurantName: restaurantData?.restaurantName || "",
-
       description: restaurantData?.description || "",
       restaurantType: restaurantData?.restaurantType || "",
       cuisineTypes: restaurantData?.cuisineTypes?.join(", ") || "",
@@ -130,28 +149,44 @@ const RestaurantInformation = () => {
   const fetchRestaurantData = async () => {
     try {
       setIsLoadingRestaurant(true);
+      setLoadingRestaurantError(null);
 
-      const res = await api.get(
-        `/restaurant/get-resturant-data?id=${user._id}`,
-      );
-      setRestaurantData(res.data.data);
+      const res = await api.get(`/restaurant/get-resturant-data?id=${user?._id}`);
+      setRestaurantData(res.data.data || {});
     } catch (error) {
-      toast.error(
+      const errorMessage =
         error.response?.data?.message ||
-          "Unknown error occurred fetching restaurant. Please try again.",
-      );
-      setLoadingRestaurantError(
-        error.response?.data?.message ||
-          "Unknown error occurred fetching restaurant. Please try again.",
-      );
+        "Unknown error occurred fetching restaurant. Please try again.";
+
+      toast.error(errorMessage);
+      setLoadingRestaurantError(errorMessage);
+      setRestaurantData({});
     } finally {
       setIsLoadingRestaurant(false);
     }
   };
 
   useEffect(() => {
-    // fetchRestaurantData();
+    if (user?._id) {
+      fetchRestaurantData();
+    }
   }, [user]);
+
+  useEffect(() => {
+    if (restaurantData) {
+      setRestaurantFormData({
+        restaurantName: restaurantData?.restaurantName || "",
+        description: restaurantData?.description || "",
+        restaurantType: restaurantData?.restaurantType || "",
+        cuisineTypes: restaurantData?.cuisineTypes?.join(", ") || "",
+        isOpen: restaurantData?.isOpen || false,
+        contactEmail: restaurantData?.contactDetails?.email || "",
+        contactPhone: restaurantData?.contactDetails?.phone || "",
+        openingTime: restaurantData?.servingHours?.openingTime || "",
+        closingTime: restaurantData?.servingHours?.closingTime || "",
+      });
+    }
+  }, [restaurantData]);
 
   return (
     <>

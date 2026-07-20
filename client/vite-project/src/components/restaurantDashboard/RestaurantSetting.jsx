@@ -17,7 +17,7 @@ const RestaurantSetting = () => {
     { id: "coreDetails", label: "Core Details", icon: MdTune },
     { id: "photos", label: "Photos", icon: MdPhotoCamera },
   ];
-  const [activeTab, setActiveTab] = useState("coreDetails");
+  const [activeTab, setActiveTab] = useState("information");
   const [isRestaurantOpen, setIsRestaurantOpen] = useState(true);
 
   const renderTabContent = () => {
@@ -80,6 +80,7 @@ const RestaurantSetting = () => {
                     ? "border-(--color-primary) bg-(--color-primary) text-white shadow-md"
                     : "border-orange-200 bg-white/80 text-[#8a5a3b] hover:border-(--color-primary)/50 hover:text-(--color-primary)"
                 }`}
+                aria-pressed={isActive}
               >
                 <Icon className="text-base" />
                 <span>{tab.label}</span>
