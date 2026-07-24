@@ -40,6 +40,7 @@ export const RegisterUser = async (req, res, next) => {
       url: photoURL,
       publicId: null,
     };
+    
     const SALT = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, SALT);
 
@@ -82,7 +83,7 @@ export const LoginUser = async (req, res, next) => {
     const isVerified = await bcrypt.compare(password, existingUser.password);
     if (!isVerified) {
       const error = new Error("Incorrect Password");
-      error.statusCode = 401;
+      error.statusCode = 401;       
       return next(error);
     }
 
@@ -90,7 +91,7 @@ export const LoginUser = async (req, res, next) => {
 
     res.status(200).json({
       message: "Welcome Back",
-      data: existingUser,
+      data: existingUser,L;
     });
   } catch (error) {
     console.log(error.message);
