@@ -179,7 +179,7 @@ export const VerifyOtp = async (req, res, next) => {
 
     const existingUser = await User.findOne({ email });
     if (!existingUser) {
-      const error = new Error("Email not registered");
+      const error = new Error("Email not registered");v
       error.statusCode = 404;
       return next(error);
     }
